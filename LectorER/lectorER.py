@@ -76,7 +76,7 @@ def listar_correspondencias(correspondencias : dict):
     texto = ""
 
     for exp, cadenas in correspondencias.items():
-        texto += f"Correspondiencias para {exp}:\n"
+        texto += f"Correspondiencias para {exp.pattern[1:-1]}:\n"
 
         if cadenas:
             for cadena in cadenas:
@@ -119,7 +119,7 @@ def solicitar_archivo_a_usuario():
             # Convierte el valor de la caja de texto a una expresión regular
             for campo in campos:
                 try:
-                    expresiones_regulares.append(re.compile(campo.get()).pattern)
+                    expresiones_regulares.append(re.compile(f"^{campo.get()}$"))
                 except:
                     expresiones_regulares.append(None)
 
@@ -147,6 +147,8 @@ def main():
 
     # Crear la ventana principal
     root = tk.Tk()
+    root.title("Lector de expresiones regulares")
+    root.option_add("*Font", "Poppins 12")
 
     # Crea tres cajas de texto para dar entrada a las expresiones regulares
     global campos
@@ -162,9 +164,16 @@ def main():
     boton = tk.Button(root,
         text="Seleccionar archivo",
         # Muestra las coincidencias en el cuadro de texto
-        command=lambda: mensaje.insert(tk.END, solicitar_archivo_a_usuario())
+        command= lambda:
+            mensaje.insert(tk.END, solicitar_archivo_a_usuario()) or alerta.config(text="")
+            if all(campo.get() for campo in campos)
+            else alerta.config(text="Por favor, ingrese una expresión regular en cada campo")   
         )
     boton.pack()
+
+    # Crea una leyenda para indicar que se deben ingresar expresiones regulares
+    alerta = tk.Label(root, text="")
+    alerta.pack()
 
     # Crear un cuadro de texto para mostrar el resultado
     global mensaje
