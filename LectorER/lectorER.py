@@ -13,7 +13,7 @@ def seleccionar_archivo():
         return: El nombre del archivo seleccionado o None si no se seleccionó ningún archivo
     """
 
-    archivo = filedialog.askopenfilename(
+    nombre_archivo = filedialog.askopenfilename(
         # Especifica abrir por defecto el directorio de documentos en Windows,
         # que funciona para cualquier usuario
         initialdir = "C:/Users/" + os.getlogin() + "/Documents",
@@ -22,10 +22,7 @@ def seleccionar_archivo():
         filetypes = (("Archivos de texto", "*.txt"), ("Todos los archivos", "*.*"))
     )
 
-    if archivo:
-        return archivo
-    else:
-        return None
+    return nombre_archivo if nombre_archivo else None
 
 def leer_archivo(ruta_archivo : str):
     """
@@ -118,14 +115,7 @@ def solicitar_archivo_a_usuario():
 
             # Convierte el valor de la caja de texto a una expresión regular
             for campo in campos:
-                try:
-                    expresiones_regulares.append(re.compile(f"^{campo.get()}$"))
-                except:
-                    expresiones_regulares.append(None)
-
-            # Verificar que los campos no estén vacíos
-            if not all(expresiones_regulares):
-                return "Por favor, ingrese una expresión regular en cada campo"
+                expresiones_regulares.append(re.compile(f"^{campo.get()}$"))
 
             lista_correspondencias = listar_correspondencias(obtener_correspondencias(expresiones_regulares, archivo))
             return lista_correspondencias
