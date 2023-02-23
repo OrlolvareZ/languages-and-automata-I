@@ -90,6 +90,7 @@ def listar_correspondencias(correspondencias : dict, cadenas_sin_correspondencia
         Esta función regresa un texto con cada expresión regular y las cadenas que coinciden con ella,
         pasando de línea y tabulando cada cadena.
         param correspondencias: Un diccionario con las expresiones regulares como llaves y las cadenas con las que coinciden como valores
+        param cadenas_sin_correspondencia: Una lista con las cadenas que no coincidieron con ninguna expresión regular
     """
 
     texto = ""
@@ -117,6 +118,7 @@ def obtener_mensaje_procesamiento(nombre_archivo : str, expresiones_regulares : 
     """
         Esta función obtiene el mensaje que se mostrará en la caja de texto
         param nombre_archivo: El nombre del archivo seleccionado
+        param expresiones_regulares: Una lista de expresiones regulares
         return: El mensaje que se mostrará en la caja de texto
     """
 
