@@ -4,6 +4,7 @@
 
 import os
 import tkinter as tk
+import tkinter.scrolledtext as scrolledtext
 from tkinter import filedialog
 import re
 
@@ -43,26 +44,48 @@ def leer_archivo(ruta_archivo : str):
 def obtener_correspondencias(expresiones_regulares : list, cadenas : list):
     """
         Esta función obtiene las correspondencias de las expresiones regulares con las cadenas
+        y devuelve un diccionario con las expresiones regulares como llaves y las cadenas con las que coinciden como valores,
+        y una lista con las cadenas que no coincidieron con ninguna expresión regular
         param expresiones_regulares: Una lista de expresiones regulares
         param cadenas: Una lista de cadenas
-        return: Un diccionario con las expresiones regulares como llaves y las cadenas con las que coinciden como valores
+        return: Una tupla con un diccionario con las expresiones regulares como llaves y las cadenas con las que coinciden como valores,
+        y una lista con las cadenas que no coincidieron con ninguna expresión regular
     """
 
     correspondencias = {}
+    global cadenas_sin_correspondencia
+    cadenas_sin_correspondencia = set()
 
     try :
 
+        # Para cada expresión regular, se crea una llave en el diccionario con una lista vacía
         for exp in expresiones_regulares:
-            correspondencias[exp] = []
-            for cadena in cadenas:
+
+                correspondencias[exp] = set()
+
+        # Para cada cadena, se verifica si coincide con alguna expresión regular
+        for cadena in cadenas:
+            coincidio = False
+
+            for exp in expresiones_regulares:
+
                 if re.fullmatch(exp, cadena):
-                    correspondencias[exp].append(cadena)
+                    # Si coincide, se agrega la cadena al conjunto de correspondencias de la expresión regular
+                    correspondencias[exp].add(cadena)
+                    coincidio = True
+
+            if not coincidio:
+                cadenas_sin_correspondencia.add(cadena)
+            
     except:
         pass
 
-    return correspondencias
+    correspondencias = list(correspondencias).sort
+    cadenas_sin_correspondencia = list(cadenas_sin_correspondencia).sort
 
-def listar_correspondencias(correspondencias : dict):
+    return (correspondencias, cadenas_sin_correspondencia)
+
+def listar_correspondencias(correspondencias : dict, cadenas_sin_correspondencia : list):
     
     """
         Esta función regresa un texto con cada expresión regular y las cadenas que coinciden con ella,
@@ -80,49 +103,78 @@ def listar_correspondencias(correspondencias : dict):
                 texto += f"\t{cadena}\n"
         else:
             texto += "\tNo hay coincidencias\n"
+
+    if cadenas_sin_correspondencia:
+
+        texto += "Estas cadenas no coincidieron con ninguna expresión regular:\n"
+
+        for cadena in cadenas_sin_correspondencia:
+            texto += f"\t{cadena}\n"
     
     return texto
 
-def solicitar_archivo_a_usuario():
+def obtener_mensaje_procesamiento(nombre_archivo : str, expresiones_regulares : list):
 
-    nombre_archivo = seleccionar_archivo()
+    """
+        Esta función obtiene el mensaje que se mostrará en la caja de texto
+        param nombre_archivo: El nombre del archivo seleccionado
+        return: El mensaje que se mostrará en la caja de texto
+    """
 
-    # Se limpia el cuadro de texto
-    global mensaje
-    mensaje.delete(1.0, tk.END)
-
-    global lista_correspondencias
+    global correspondencias_en_lista
     
     # Si ya existe la lista de correspondencias y no se especificó un archivo, se muestra la lista de correspondencias
-    if lista_correspondencias and not nombre_archivo:
+    if correspondencias_en_lista and not nombre_archivo:
 
-        return lista_correspondencias
+        return correspondencias_en_lista
 
-    # Si no existe la lista de correspondencias y se especificó un archivo, se crea la lista de correspondencias y se muestra
+    # Si no existe la lista de correspondencias y se especificó un archivo,
+    # se crea la lista de correspondencias y se muestra
     if nombre_archivo:
 
         archivo = leer_archivo(nombre_archivo)
 
         if archivo:
 
-            # Cambiar la leyenda del botón
-            global boton
-            boton.config(text="Seleccionar otro archivo")
-
-            # Obtener las expresiones regulares de las cajas de texto
-            global campos
-            expresiones_regulares = []
-
-            # Convierte el valor de la caja de texto a una expresión regular
-            for campo in campos:
-                expresiones_regulares.append(re.compile(f"^{campo.get()}$"))
-
-            lista_correspondencias = listar_correspondencias(obtener_correspondencias(expresiones_regulares, archivo))
-            return lista_correspondencias
+            correspondencias = obtener_correspondencias(expresiones_regulares, archivo)
+            correspondencias_en_lista = listar_correspondencias(correspondencias[0], correspondencias[1])
+            return correspondencias_en_lista
         
         else: return "No se pudo leer el archivo"
 
     else: return ""
+
+def mostrar_mensaje_procesamiento():
+
+    """
+        Esta función muestra el mensaje que se mostrará en la caja de texto,
+        o muestra un mensaje de error si no se han ingresado expresiones regulares en las cajas de texto
+    """
+
+    global campos
+    global alerta
+    global area_texto
+
+    area_texto.configure(state ='normal') # Se habilita la escritura en el cuadro de texto
+
+    if all(campo.get() for campo in campos): # Se verifica que se hayan ingresado expresiones regulares
+
+        # Convierte los valores de las cajas de texto en expresiones regulares
+        expresiones_regulares = []
+        for campo in campos:
+                expresiones_regulares.append(re.compile(f"^{campo.get()}$"))
+        alerta.config(text="")
+
+        mensaje = obtener_mensaje_procesamiento( seleccionar_archivo(), expresiones_regulares )
+        area_texto.delete(1.0, tk.END) # Se limpia el cuadro de texto
+        area_texto.insert(tk.END, mensaje )
+        global boton # Si el archivo se leyó correctamente, se cambia el texto del botón
+        if mensaje:
+            boton.config(text="Seleccionar otro archivo")
+    else:
+        alerta.config(text="Por favor, ingrese una expresión regular en cada campo")
+
+    area_texto.configure(state ='disabled') # Se deshabilita la escritura en el cuadro de texto
 
 def main():
 
@@ -132,8 +184,8 @@ def main():
 
     # La lista de correspondencias se guarda en una variable global para que se pueda acceder a ella
     # y esta inicia vacía
-    global lista_correspondencias
-    lista_correspondencias = None
+    global correspondencias_en_lista
+    correspondencias_en_lista = None
 
     # Crear la ventana principal
     root = tk.Tk()
@@ -151,26 +203,18 @@ def main():
 
     # Crear un botón para solicitar el archivo
     global boton
-    boton = tk.Button(root,
-        text="Seleccionar archivo",
-        # Muestra las coincidencias en el cuadro de texto
-        command= lambda:
-            mensaje.insert(tk.END, solicitar_archivo_a_usuario()) or alerta.config(text="")
-            if all(campo.get() for campo in campos)
-            else alerta.config(text="Por favor, ingrese una expresión regular en cada campo")   
-        )
+    boton = tk.Button(root, text="Seleccionar archivo", command = mostrar_mensaje_procesamiento)
     boton.pack()
 
     # Crea una leyenda para indicar que se deben ingresar expresiones regulares
+    global alerta
     alerta = tk.Label(root, text="")
     alerta.pack()
 
     # Crear un cuadro de texto para mostrar el resultado
-    global mensaje
-    mensaje = tk.Text(root, height=25, width=100)
-    # Habilita la barra de desplazamiento vertical
-    mensaje.config(yscrollcommand=tk.Scrollbar(root).set)
-    mensaje.pack()
+    global area_texto
+    area_texto = scrolledtext.ScrolledText(root, height=25, width=100)
+    area_texto.pack()
 
     # Mostrar la ventana
     root.mainloop()
