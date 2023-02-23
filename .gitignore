@@ -1,1 +1,4 @@
 # Ignore all the files in the LectorER directory that are not .py files
+/LectorER/build
+/LectorER/dist
+/LectorER/lectorER.spec
