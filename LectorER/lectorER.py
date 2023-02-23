@@ -2,6 +2,7 @@
 # un archivo de texto para leer cadenas de él, para luego mostrar las cadenas en la
 # interfaz, junto con las coincidencias con tres expresiones regulares dadas.
 
+import io
 import os
 import tkinter as tk
 import tkinter.scrolledtext as scrolledtext
@@ -28,15 +29,15 @@ def seleccionar_archivo():
 def leer_archivo(ruta_archivo : str):
     """
         Esta función lee el archivo y devuelve las líneas del archivo como una lista
-        param file: El archivo a leer
+        param ruta_archivo: El archivo a leer
         return: Una lista con las líneas del archivo o None si no se pudo leer el archivo
     """
 
     try:
 
-        file_text = open(ruta_archivo, "r").read()
-        lines = file_text.splitlines() # Obtener las líneas del archivo
-        return lines
+        texto_archivo = io.open(ruta_archivo, mode="r", encoding="utf-8").read() # leer archivo como UTF-8
+        lineas = texto_archivo.splitlines() # Obtener las líneas del archivo
+        return lineas
 
     except:
         return None
