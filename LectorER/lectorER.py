@@ -53,35 +53,34 @@ def obtener_correspondencias(expresiones_regulares : list, cadenas : list):
     """
 
     correspondencias = {}
-    global cadenas_sin_correspondencia
     cadenas_sin_correspondencia = set()
 
-    try :
+    # Para cada expresión regular, se crea una llave en el diccionario con una lista vacía
+    for exp in expresiones_regulares:
 
-        # Para cada expresión regular, se crea una llave en el diccionario con una lista vacía
+            correspondencias[exp] = set()
+
+    # Para cada cadena, se verifica si coincide con alguna expresión regular
+    for cadena in cadenas:
+        coincidio = False
+
         for exp in expresiones_regulares:
 
-                correspondencias[exp] = set()
+            if re.fullmatch(exp, cadena):
+                # Si coincide, se agrega la cadena al conjunto de correspondencias de la expresión regular
+                correspondencias[exp].add(cadena)
+                coincidio = True
 
-        # Para cada cadena, se verifica si coincide con alguna expresión regular
-        for cadena in cadenas:
-            coincidio = False
+        if not coincidio:
+            cadenas_sin_correspondencia.add(cadena)
 
-            for exp in expresiones_regulares:
+    # Se ordenan las cadenas de cada expresión regular
+    for exp in expresiones_regulares:
+        correspondencias[exp] = list(correspondencias[exp])
+        correspondencias[exp].sort()
 
-                if re.fullmatch(exp, cadena):
-                    # Si coincide, se agrega la cadena al conjunto de correspondencias de la expresión regular
-                    correspondencias[exp].add(cadena)
-                    coincidio = True
-
-            if not coincidio:
-                cadenas_sin_correspondencia.add(cadena)
-            
-    except:
-        pass
-
-    correspondencias = list(correspondencias).sort
-    cadenas_sin_correspondencia = list(cadenas_sin_correspondencia).sort
+    cadenas_sin_correspondencia = list(cadenas_sin_correspondencia)
+    cadenas_sin_correspondencia.sort()
 
     return (correspondencias, cadenas_sin_correspondencia)
 
@@ -162,7 +161,10 @@ def mostrar_mensaje_procesamiento():
         # Convierte los valores de las cajas de texto en expresiones regulares
         expresiones_regulares = []
         for campo in campos:
-                expresiones_regulares.append(re.compile(f"^{campo.get()}$"))
+            # Se reemplazan los paréntesis por corchetes para que coincidan con el formato de las expresiones regulares,
+            # y se agrega un carácter de inicio y otro de fin de cadena, para mayor comodidad del usuario
+            entrada_campo = campo.get().replace("(", "[").replace(")", "]")
+            expresiones_regulares.append(re.compile(f"^{entrada_campo}$"))
         alerta.config(text="")
 
         mensaje = obtener_mensaje_procesamiento( seleccionar_archivo(), expresiones_regulares )
