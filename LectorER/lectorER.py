@@ -8,6 +8,7 @@ import tkinter as tk
 import tkinter.scrolledtext as scrolledtext
 from tkinter import filedialog
 import re
+import regex
 
 def seleccionar_archivo():
     """
@@ -36,7 +37,8 @@ def leer_archivo(ruta_archivo : str):
     try:
 
         texto_archivo = io.open(ruta_archivo, mode="r", encoding="utf-8").read() # leer archivo como UTF-8
-        lineas = texto_archivo.splitlines() # Obtener las líneas del archivo
+        lineas = re.split(r"\s+", texto_archivo)
+        
         return lineas
 
     except:
@@ -74,6 +76,7 @@ def obtener_correspondencias(expresiones_regulares : list, cadenas : list):
 
         if not coincidio:
             cadenas_sin_correspondencia.add(cadena)
+            
 
     # Se ordenan las cadenas de cada expresión regular
     for exp in expresiones_regulares:
@@ -164,18 +167,15 @@ def mostrar_mensaje_procesamiento():
         # Convierte los valores de las cajas de texto en expresiones regulares
         expresiones_regulares = []
         for campo in campos:
-            # Se reemplazan los paréntesis por corchetes para que coincidan con el formato de las expresiones regulares,
-            # y se agrega un carácter de inicio y otro de fin de cadena, para mayor comodidad del usuario
-            entrada_campo = campo.get().replace("(", "[").replace(")", "]")
-            expresiones_regulares.append(re.compile(f"^{entrada_campo}$"))
+            expresiones_regulares.append(re.compile(f"^{campo.get()}$"))
         alerta.config(text="")
-
         mensaje = obtener_mensaje_procesamiento( seleccionar_archivo(), expresiones_regulares )
         area_texto.delete(1.0, tk.END) # Se limpia el cuadro de texto
         area_texto.insert(tk.END, mensaje )
         global boton # Si el archivo se leyó correctamente, se cambia el texto del botón
         if mensaje:
             boton.config(text="Seleccionar otro archivo")
+        
     else:
         alerta.config(text="Por favor, ingrese una expresión regular en cada campo")
 
@@ -198,13 +198,22 @@ def main():
     root.option_add("*Font", "Poppins 12")
 
     # Crea tres cajas de texto para dar entrada a las expresiones regulares
+    expresiones_regulares = [
+        "¡*(0-9)+((años?)|(mes(es)?)|(días?))!*",
+        "(A-Z)(a-z)+((A-Z)(a-z)+)?((A-Z)(a-z)+)+",
+        "(0-9)+((años?)|(mes(es)?)|(días?))!*",
+    ]
     global campos
     campos = []
     for i in range(3):
         campos.append(tk.Entry(root))
+        campos[i].insert(0, expresiones_regulares[i])
         # Agregar la leyenda que indica para qué expresión regular es la caja de texto
         tk.Label(root, text=f"Expresión regular {i+1}:").pack()
         campos[i].pack()
+        # Configurando el tamaño del campo
+        tamano_ventana = root.winfo_screenwidth()
+        campos[i].config(width=round(tamano_ventana/20))
 
     # Crear un botón para solicitar el archivo
     global boton
