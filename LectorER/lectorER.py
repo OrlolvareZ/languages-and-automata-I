@@ -199,9 +199,9 @@ def main():
 
     # Crea tres cajas de texto para dar entrada a las expresiones regulares
     expresiones_regulares = [
-        "¡*(0-9)+((años?)|(mes(es)?)|(días?))!*",
-        "(A-Z)(a-z)+((A-Z)(a-z)+)?((A-Z)(a-z)+)+",
-        "(0-9)+((años?)|(mes(es)?)|(días?))!*",
+        "¡*[0-9]+((años?)|(mes(es)?)|(días?))!*",
+        "[A-Z][a-z]+([A-Z][a-z]+)?([A-Z][a-z]+)+",
+        "\w*(holamundo|adiosmundo)+\w*"
     ]
     global campos
     campos = []
