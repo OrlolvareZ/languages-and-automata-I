@@ -8,7 +8,6 @@ import tkinter as tk
 import tkinter.scrolledtext as scrolledtext
 from tkinter import filedialog
 import re
-import regex
 
 def seleccionar_archivo():
     """
