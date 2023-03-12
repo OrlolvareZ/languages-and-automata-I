@@ -58,24 +58,31 @@ class Descriptor:
         que representa la expresión regular y un conjunto de estados de aceptación
     """
         
-    def __init__(self, nombre: str, automata):
+    def __init__(self, nombre: str, automata : dict):
 
         """
             El analizador tiene la tarea de revisar una cadena y analizar cada caracter
             para determinar si es parte de la expresión regular que describe.
             param descripcion: Una descripción de la expresión regular
-            param automata: Una tupla que contiene un diccionario que representa autómata finito no determinista
-            que representa la expresión regular y un conjunto de estados de aceptación
-            En la tupla, el autómata finito no determinista se encuentra representado en un diccionario con el
+            param automata: un diccionario que representa un autómata finito no determinista, bajo el siguiente
             formato:
+
             {
-                "estado": [
-                    {"estado_destino": "expresion_regular_que_coincide_con_el_caracter"},
+                "transitions" :
+                {
+                    "estado": [
+                        {"estado_destino": "expresion_regular_que_coincide_con_el_caracter"},
+                        ...
+                    ],
                     ...
-                ],
-                ...
+                },
+                "endstates" :
+                [
+                    "estado_aceptacion_1",
+                    ...,
+                    "estado_aceptacion_n"
+                ]
             }
-            Por su parte, el conjunto de estados de aceptación se encuentra representado en una lista.
         """
 
         self.nombre = nombre
@@ -102,19 +109,15 @@ class Descriptor:
 
         estado_actual = "q0"
 
-        # Se recorre cada caracter de la cadena
-        # Coloca un selector al ciclo for que me permita salir del for padre desde el for anidado
-
         try:
             for caracter in cadena:
 
                 encontro_transicion = False
 
-                # automata[0] es el diccionario que representa el autómata finito no determinista
-                for transicion in self.automata[0][estado_actual]: # Se obtienen las transiciones del estado actual
+                for transicion in self.automata["transitions"][estado_actual]: # Se obtienen las transiciones del estado actual
 
                     descripcion_natural.append(f"Se encontró el caracter '{caracter}' en el estado '{estado_actual}'")
-                    posible_destino = list(transicion.keys())[0]
+                    posible_destino = next(iter(transicion.keys()))
                     caracter_esperado = transicion[posible_destino]
 
                     if re.fullmatch(caracter_esperado, caracter):
@@ -130,8 +133,7 @@ class Descriptor:
 
                 descripcion_natural.append("------------------------")
 
-            # automata[1] es el conjunto de estados de aceptación    
-            if estado_actual in self.automata[1]:
+            if estado_actual in self.automata["endstates"]:
                 descripcion_natural.append(f"El autómata finalizó en el estado '{estado_actual}', un estado de aceptación")
             else:
                 descripcion_natural.append(f"El autómata finalizó en el estado '{estado_actual}', un estado no de aceptación")
