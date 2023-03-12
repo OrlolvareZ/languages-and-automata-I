@@ -10,6 +10,8 @@
     
 """
 
+import os
+import sys
 import tkinter as tk
 from tkinter import scrolledtext
 from tkinter import filedialog
@@ -83,6 +85,10 @@ class App:
             [List_btns] es una lista de botones que permite analizar una cadena de caracteres
             y apreciar de manera textual el proceso de reconocimiento de la misma por el automata
     """
+
+    def resource_path(self, relative_path):
+        base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+        return os.path.join(base_path, relative_path)
 
     def definir_exp_reg(self):
 
@@ -272,19 +278,19 @@ class App:
 
         # Se leen las imagenes correspondientes al diagrama de Moore de cada automata
         # y una etiqueta para las cadenas que no tienen correspondencia
-        img_identificadores = Image.open("./imagenes/autom_identificadores.png")
+        img_identificadores = Image.open(self.resource_path("./imagenes/autom_identificadores.png"))
         img_identificadores = ImageTk.PhotoImage(img_identificadores.resize((300, 230)))
         lbl_iden = tk.Label(ventana_principal, image=img_identificadores)
         lbl_iden.image = img_identificadores
         lbl_iden.grid(row=1, column=0)
 
-        img_constantes = Image.open("./imagenes/autom_constantes.png")
+        img_constantes = Image.open(self.resource_path("./imagenes/autom_constantes.png"))
         img_constantes = ImageTk.PhotoImage(img_constantes.resize((300, 240)))
         lbl_const = tk.Label(ventana_principal, image=img_constantes)
         lbl_const.image = img_constantes
         lbl_const.grid(row=1, column=1)
 
-        img_comentarios = Image.open("./imagenes/autom_comentarios.png")
+        img_comentarios = Image.open(self.resource_path("./imagenes/autom_comentarios.png"))
         img_comentarios = ImageTk.PhotoImage(img_comentarios.resize((300, 240)))
         lbl_com = tk.Label(ventana_principal, image=img_comentarios)
         lbl_com.image = img_comentarios
