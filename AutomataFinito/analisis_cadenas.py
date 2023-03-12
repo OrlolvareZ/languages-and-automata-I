@@ -136,7 +136,7 @@ class Descriptor:
             if estado_actual in self.automata["endstates"]:
                 descripcion_natural.append(f"El autómata finalizó en el estado '{estado_actual}', un estado de aceptación")
             else:
-                descripcion_natural.append(f"El autómata finalizó en el estado '{estado_actual}', un estado no de aceptación")
+                descripcion_natural.append(f"El autómata finalizó en el estado '{estado_actual}', un estado de no aceptación")
 
             self.descripcion_natural = descripcion_natural
             return descripcion_natural

@@ -201,7 +201,7 @@ class App:
 
         return automatas
 
-    def describir_analisis(self, cadena : str, descriptores: list[Descriptor], maxlineas : int = 20):
+    def describir_analisis(self, cadena : str, descriptores: list[Descriptor], maxlineas : int = 15):
 
         """
             Este método permite analizar una cadena de caracteres y mostrar el proceso de reconocimiento de la misma
@@ -219,6 +219,7 @@ class App:
                 lista_estatutos = descriptor.describir(cadena)
                 lineas_a_mostrar = len(lista_estatutos)
                 contador_lineas = 0
+                contador_lineas_total = 0
                 
                 if len(lista_estatutos) > maxlineas:
                     lineas_a_mostrar = maxlineas
@@ -226,15 +227,17 @@ class App:
                 for estatuto in lista_estatutos:
                     analisis += estatuto + "\n"
                     contador_lineas += 1
+                    contador_lineas_total += 1
 
-                    if lineas_a_mostrar == contador_lineas:
-
-                        titulo = f"Analisis de la cadena {cadena} como {descriptor.nombre}"
+                    if lineas_a_mostrar == contador_lineas or contador_lineas_total == len(lista_estatutos):
 
                         if len(lista_estatutos) > maxlineas:
-                            titulo += " (Continuación)"
+                            estatus_lineas = f"(Mostrando líneas {contador_lineas_total - maxlineas + 1 if contador_lineas_total < len(lista_estatutos) else contador_lineas_total - contador_lineas + 1}"
+                            estatus_lineas += f" a {contador_lineas_total if contador_lineas_total < len(lista_estatutos) else len(lista_estatutos)}"
+                            estatus_lineas += f", de {len(lista_estatutos)})\n"
+                            analisis = estatus_lineas + analisis
 
-                        messagebox.showinfo(titulo, analisis)
+                        messagebox.showinfo(f"Análisis de la cadena {cadena} como {descriptor.nombre}", analisis)
                         analisis = ""
                         contador_lineas = 0
 
@@ -268,17 +271,25 @@ class App:
                 widget.destroy()
 
         # Se leen las imagenes correspondientes al diagrama de Moore de cada automata
-        img_identificadores = tk.PhotoImage(file="./imagenes/autom_identificadores.png", width=100, height=100)
-        img_constantes = tk.PhotoImage(file="./imagenes/autom_constantes.png", width=100, height=100)
-        img_comentarios = tk.PhotoImage(file="./imagenes/autom_comentarios.png", width=100, height=100)
+        # y una etiqueta para las cadenas que no tienen correspondencia
+        img_identificadores = Image.open("./imagenes/autom_identificadores.png")
+        img_identificadores = ImageTk.PhotoImage(img_identificadores.resize((300, 230)))
+        lbl_iden = tk.Label(ventana_principal, image=img_identificadores)
+        lbl_iden.image = img_identificadores
+        lbl_iden.grid(row=1, column=0)
 
-        img_identificadores = tk.PhotoImage(file="./imagenes/autom_identificadores.png", width=100, height=100)
-        img_constantes = tk.PhotoImage(file="./imagenes/autom_constantes.png", width=100, height=100)
-        img_comentarios = tk.PhotoImage(file="./imagenes/autom_comentarios.png", width=100, height=100)
-        # Se colocan en la ventana principal
-        tk.Label(ventana_principal, image=img_identificadores).grid(row=1, column=0)
-        tk.Label(ventana_principal, image=img_constantes).grid(row=1, column=1)
-        tk.Label(ventana_principal, image=img_comentarios).grid(row=1, column=2)
+        img_constantes = Image.open("./imagenes/autom_constantes.png")
+        img_constantes = ImageTk.PhotoImage(img_constantes.resize((300, 240)))
+        lbl_const = tk.Label(ventana_principal, image=img_constantes)
+        lbl_const.image = img_constantes
+        lbl_const.grid(row=1, column=1)
+
+        img_comentarios = Image.open("./imagenes/autom_comentarios.png")
+        img_comentarios = ImageTk.PhotoImage(img_comentarios.resize((300, 240)))
+        lbl_com = tk.Label(ventana_principal, image=img_comentarios)
+        lbl_com.image = img_comentarios
+        lbl_com.grid(row=1, column=2)
+
         tk.Label(ventana_principal, text="Elementos no clasificados").grid(row=1, column=3)
 
         # Se crean los frames para los botones de cada automata
@@ -342,7 +353,7 @@ class App:
                         descriptor_comentarios,
                     ]),
                 width = ancho_boton
-            ).pack
+            ).pack()
 
     def leer_archivo_leng_prueba(self):
 
@@ -350,12 +361,10 @@ class App:
             Esta función lee un archivo de texto y obtiene las cadenas de caracteres que contiene.
             El archivo contiene cadenas de caracteres que corresponden a elementos léxicos de un
             lenguaje de programación ficticio.
-            
-            Estas cadenas de caracteres son después clasificadas por un objeto, el cual utiliza expresiones
-            regulares para clasificarlas, y a su vez, es analizada por un objeto descriptor
-            de cadenas de caracteres, el cual utiliza un automata de estado finito para describir
-            el proceso de reconocimiento de las cadenas de caracteres por el clasificador en lenguaje
-            natural.
+
+            Una vez que se lee el archivo, se obtienen las correspondencias de cada cadena con
+            las expresiones regulares que definen los elementos léxicos del lenguaje, y se
+            construye la interfaz gráfica de la aplicación.
         """
 
         try:
@@ -374,6 +383,11 @@ class App:
 
     def main(self):
 
+        """
+            Esta función es la función principal del programa, que solicita la lectura de un archivo
+            con el lenguaje de prueba y la construcción de otros widgets necesarios para la aplicación.
+        """
+
         global lector
         lector = LectorCadenas()
         global clasificador
@@ -387,9 +401,6 @@ class App:
         global descriptor_comentarios
         descriptor_comentarios = Descriptor("comentario", automatas["comentarios"])
 
-        """
-            Esta función es la función principal del programa, que crea la interfaz de usuario y la muestra
-        """
         global ventana_principal
         ventana_principal = tk.Tk()
         ventana_principal.title("Clasificador de componentes léxicos para lenguaje de prueba")
@@ -401,13 +412,14 @@ class App:
         ventana_principal.columnconfigure(3, weight=1)
         ventana_principal.rowconfigure(0, weight=1, pad=10) # fila del botón
         ventana_principal.rowconfigure(1, weight=2) # Fila de las imágenes
-        ventana_principal.rowconfigure(2, weight=1) # Fila de los botones
+        ventana_principal.rowconfigure(2, weight=3) # Fila de los botones
 
         global boton
         boton = tk.Button(
             ventana_principal,
             text = "Leer archivo",
-            command = self.leer_archivo_leng_prueba
+            command = self.leer_archivo_leng_prueba,
+            height = 10
         )
         boton.grid(column=1, row=0, columnspan=2, sticky="nsew", padx=10, pady=10)
 
