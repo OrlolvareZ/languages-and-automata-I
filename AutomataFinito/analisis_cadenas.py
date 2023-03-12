@@ -106,16 +106,15 @@ class Descriptor:
         """
 
         descripcion_natural = []
-
+        encontro_transicion : bool
         estado_actual = "q0"
 
         try:
             for caracter in cadena:
 
-                encontro_transicion = False
-
                 for transicion in self.automata["transitions"][estado_actual]: # Se obtienen las transiciones del estado actual
-
+                    
+                    encontro_transicion = False
                     descripcion_natural.append(f"Se encontró el caracter '{caracter}' en el estado '{estado_actual}'")
                     posible_destino = next(iter(transicion.keys()))
                     caracter_esperado = transicion[posible_destino]
@@ -126,7 +125,7 @@ class Descriptor:
                         descripcion_natural.append(f"Ahora el estado actual es '{estado_actual}'")
                         encontro_transicion = True
                         break
-                
+                                
                 if not encontro_transicion:
                     descripcion_natural.append(f"No se encontró una transición con el caracter '{caracter}' desde el estado '{estado_actual}'")
                     break
@@ -135,6 +134,8 @@ class Descriptor:
 
             if estado_actual in self.automata["endstates"]:
                 descripcion_natural.append(f"El autómata finalizó en el estado '{estado_actual}', un estado de aceptación")
+                if not encontro_transicion:
+                    descripcion_natural.append(f"No obstante, no se encontró una transición para todos los caracteres de la cadena. Por lo tanto, la cadena no es válida")
             else:
                 descripcion_natural.append(f"El autómata finalizó en el estado '{estado_actual}', un estado de no aceptación")
 
