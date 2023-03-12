@@ -3,3 +3,7 @@
 /LectorER/dist
 /LectorER/lectorER.spec
 /AutomataFinito/__pycache__
+/AutomataFinito/build
+/AutomataFinito/dist
+/AutomataFinito/lectorER.spec
+/AutomataFinito/app.spec
