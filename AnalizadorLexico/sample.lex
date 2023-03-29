@@ -33,50 +33,50 @@
     [a-zA-Z]([a-zA-Z]|"_"|[0-9])*    { escribirLexema(yytext, -55, -2, numLinea); }
 
     /* Operadores aritméticos */
-    "-"             { escribirLexema(yytext, -25, -2, numLinea); }
-    "+"             { escribirLexema(yytext, -24, -2, numLinea); }
-    "/"             { escribirLexema(yytext, -22, -2, numLinea); }
-    "*"             { escribirLexema(yytext, -21, -2, numLinea); }
-    "="             { escribirLexema(yytext, -26, -2, numLinea); }
+    "-"             { escribirLexema(yytext, -25, -1, numLinea); }
+    "+"             { escribirLexema(yytext, -24, -1, numLinea); }
+    "/"             { escribirLexema(yytext, -22, -1, numLinea); }
+    "*"             { escribirLexema(yytext, -21, -1, numLinea); }
+    "="             { escribirLexema(yytext, -26, -1, numLinea); }
 
     /* Operadores relacionales */
-    "<"             { escribirLexema(yytext, -31, -2, numLinea); }
-    ">"             { escribirLexema(yytext, -33, -2, numLinea); }
-    "<="            { escribirLexema(yytext, -32, -2, numLinea); }
-    ">="            { escribirLexema(yytext, -34, -2, numLinea); }
-    "=="            { escribirLexema(yytext, -35, -2, numLinea); }
-    "!="            { escribirLexema(yytext, -36, -2, numLinea); }
+    "<"             { escribirLexema(yytext, -31, -1, numLinea); }
+    ">"             { escribirLexema(yytext, -33, -1, numLinea); }
+    "<="            { escribirLexema(yytext, -32, -1, numLinea); }
+    ">="            { escribirLexema(yytext, -34, -1, numLinea); }
+    "=="            { escribirLexema(yytext, -35, -1, numLinea); }
+    "!="            { escribirLexema(yytext, -36, -1, numLinea); }
 
     /* Operadores lógicos */
-    "&"             { escribirLexema(yytext, -41, -2, numLinea); }
-    "|"             { escribirLexema(yytext, -42, -2, numLinea); }
-    "!"             { escribirLexema(yytext, -43, -2, numLinea); }
+    "&"             { escribirLexema(yytext, -41, -1, numLinea); }
+    "|"             { escribirLexema(yytext, -42, -1, numLinea); }
+    "!"             { escribirLexema(yytext, -43, -1, numLinea); }
 
     /* Palabras reservadas */
-    "programa"      { escribirLexema(yytext, -1, -2, numLinea); }
-    "inicio"        { escribirLexema(yytext, -2, -2, numLinea); }
-    "fin"           { escribirLexema(yytext, -3, -2, numLinea); }
-    "leer"          { escribirLexema(yytext, -4, -2, numLinea); }
-    "escribir"      { escribirLexema(yytext, -5, -2, numLinea); }
-    "entero"        { escribirLexema(yytext, -11, -2, numLinea); }
-    "real"          { escribirLexema(yytext, -12, -2, numLinea); }
-    "cadena"        { escribirLexema(yytext, -13, -2, numLinea); }
-    "logico"        { escribirLexema(yytext, -14, -2, numLinea); }
-    "si"            { escribirLexema(yytext, -6, -2, numLinea); }
-    "sino"          { escribirLexema(yytext, -7, -2, numLinea); }
-    "entonces"      { escribirLexema(yytext, -16, -2, numLinea); }
-    "mientras"      { escribirLexema(yytext, -17, -2, numLinea); }
-    "hacer"         { escribirLexema(yytext, -14, -2, numLinea); }
-    "repetir"       { escribirLexema(yytext, -9, -2, numLinea); }
-    "hasta"         { escribirLexema(yytext, -10, -2, numLinea); }
-    "variable"      { escribirLexema(yytext, -15, -2, numLinea); }
+    "programa"      { escribirLexema(yytext, -1, -1, numLinea); }
+    "inicio"        { escribirLexema(yytext, -2, -1, numLinea); }
+    "fin"           { escribirLexema(yytext, -3, -1, numLinea); }
+    "leer"          { escribirLexema(yytext, -4, -1, numLinea); }
+    "escribir"      { escribirLexema(yytext, -5, -1, numLinea); }
+    "entero"        { escribirLexema(yytext, -11, -1, numLinea); }
+    "real"          { escribirLexema(yytext, -12, -1, numLinea); }
+    "cadena"        { escribirLexema(yytext, -13, -1, numLinea); }
+    "logico"        { escribirLexema(yytext, -14, -1, numLinea); }
+    "si"            { escribirLexema(yytext, -6, -1, numLinea); }
+    "sino"          { escribirLexema(yytext, -7, -1, numLinea); }
+    "entonces"      { escribirLexema(yytext, -16, -1, numLinea); }
+    "mientras"      { escribirLexema(yytext, -17, -1, numLinea); }
+    "hacer"         { escribirLexema(yytext, -14, -1, numLinea); }
+    "repetir"       { escribirLexema(yytext, -9, -1, numLinea); }
+    "hasta"         { escribirLexema(yytext, -10, -1, numLinea); }
+    "variable"      { escribirLexema(yytext, -15, -1, numLinea); }
 
     /* Caracteres especiales */
-    "("             { escribirLexema(yytext, -73, -2, numLinea); }
-    ")"             { escribirLexema(yytext, -74, -2, numLinea); }
-    ";"             { escribirLexema(yytext, -75, -2, numLinea); }
-    ","             { escribirLexema(yytext, -76, -2, numLinea); }
-    ":"             { escribirLexema(yytext, -77, -2, numLinea); }
+    "("             { escribirLexema(yytext, -73, -1, numLinea); }
+    ")"             { escribirLexema(yytext, -74, -1, numLinea); }
+    ";"             { escribirLexema(yytext, -75, -1, numLinea); }
+    ","             { escribirLexema(yytext, -76, -1, numLinea); }
+    ":"             { escribirLexema(yytext, -77, -1, numLinea); }
 
     /*
         Comentarios
@@ -90,25 +90,25 @@
         Números enteros (constante entera)
         - No incluye negativos
     */
-    [0-9]+          { escribirLexema(yytext, -61, -2, numLinea); }
+    [0-9]+          { escribirLexema(yytext, -61, -1, numLinea); }
     /*
         Números reales (constante real)
         - Números seguido de punto seguido de números
         - No incluye notación científica
     */
-    [0-9]+\.[0-9]+  { escribirLexema(yytext, -62, -2, numLinea); }
+    [0-9]+\.[0-9]+  { escribirLexema(yytext, -62, -1, numLinea); }
     /*
         Cadenas (constante cadena)
         - Va limitada por “ al inicio y al final
         - Se considera una sola linea
     */
-    "\"".*"\""          { escribirLexema(yytext, -63, -2, numLinea); }
+    "\"".*"\""      { escribirLexema(yytext, -63, -1, numLinea); }
     /*
         Valor lógico (constnate lógica)
         - Verdadero o falso
     */
-    "verdadero"     { escribirLexema(yytext, -64, -2, numLinea); }
-    "falso"         { escribirLexema(yytext, -65, -2, numLinea); }
+    "verdadero"     { escribirLexema(yytext, -64, -1, numLinea); }
+    "falso"         { escribirLexema(yytext, -65, -1, numLinea); }
 
     \n              { numLinea++; }
 
