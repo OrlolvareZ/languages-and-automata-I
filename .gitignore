@@ -9,3 +9,6 @@
 /AutomataFinito/app.spec
 /AnalizadorLexico/lex.yy.c
 /AnalizadorLexico/a.out
+/AnalizadorLexico/docs.texi
+/AnalizadorLexico/tokens.txt
+/AnalizadorLexico/errors.txt
