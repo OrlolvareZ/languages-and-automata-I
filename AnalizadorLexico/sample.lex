@@ -119,7 +119,7 @@
 void escribirLexema(char *lexema, int token, int posTab, int numLinea)
 {
     fprintf(apuntadorArchivo,
-        "| %-14s| %-15s| %-19d| %-12d|\n",
+        "| %-14s| %-15d| %-19d| %-12d|\n",
         lexema, token, posTab, numLinea
     );
     
