@@ -207,7 +207,7 @@ class App:
 
         return automatas
 
-    def describir_analisis(self, cadena : str, descriptores: list[Descriptor], maxlineas : int = 15):
+    def describir_analisis(self, cadena : str, descriptores: list[Descriptor], maxlineas : int = 30):
 
         """
             Este método permite analizar una cadena de caracteres y mostrar el proceso de reconocimiento de la misma
@@ -269,12 +269,19 @@ class App:
                                     y cadenas de caracteres que las describen como valores
             param cadenas_sin_correspondencia: Lista de cadenas de caracteres que no tienen correspondencia con ninguna expresión regular del diccionario
         """
-        # Limpia la ventana principal, excepto el botón
+        # Limpia la ventana principal
         global ventana_principal
-        global boton
         for widget in ventana_principal.winfo_children():
-            if widget != boton:
                 widget.destroy()
+
+        global boton
+        boton = tk.Button(
+            ventana_principal,
+            text = "Leer archivo",
+            command = self.leer_archivo_leng_prueba,
+            height = 10
+        )
+        boton.grid(column=1, row=0, columnspan=2, sticky="nsew", padx=10, pady=10)
 
         # Se leen las imagenes correspondientes al diagrama de Moore de cada automata
         # y una etiqueta para las cadenas que no tienen correspondencia

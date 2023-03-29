@@ -98,7 +98,7 @@ class Descriptor:
         # Se elimina la última coma
         return descripcion_como_cadena[:-1]
 
-    def describir(self, cadena):
+    def describir(self, cadena, estado_inicial = "q0"):
         """
             Esta función analiza una cadena y determina si es parte de la expresión regular que describe
             param cadena: Una cadena
@@ -107,15 +107,15 @@ class Descriptor:
 
         descripcion_natural = []
         encontro_transicion : bool
-        estado_actual = "q0"
+        estado_actual = estado_inicial
 
         try:
             for caracter in cadena:
 
-                for transicion in self.automata["transitions"][estado_actual]: # Se obtienen las transiciones del estado actual
-                    
+                descripcion_natural.append(f"Se encontró el caracter '{caracter}' en el estado '{estado_actual}'")
+
+                for transicion in self.automata["transitions"][estado_actual]: # Se obtienen las transiciones del estado actua
                     encontro_transicion = False
-                    descripcion_natural.append(f"Se encontró el caracter '{caracter}' en el estado '{estado_actual}'")
                     posible_destino = next(iter(transicion.keys()))
                     caracter_esperado = transicion[posible_destino]
 
