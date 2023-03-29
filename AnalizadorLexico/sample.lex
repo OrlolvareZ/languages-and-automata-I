@@ -5,15 +5,15 @@
     FILE *apuntadorArchivo;
     FILE *apuntadorArchivoErrores;
 
-    void escribirLexema(char *lexema, int token, int posTab, int numLinea)
-    void escribirError(char *lexema, char *desc, int numLinea)
+    void escribirLexema(char *lexema, int token, int posTab, int numLinea);
+    void escribirError(char *lexema, char *desc, int numLinea);
 
 %}
 
 /* Sección de reglas (exp. regulares) */
 %%
 
-    [ \t\r]         // los espacios en blanco no generan tokens
+    [ \t\r]         { }         // los espacios en blanco no generan tokens
 
     /*
         Identificadores
