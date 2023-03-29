@@ -7,3 +7,5 @@
 /AutomataFinito/dist
 /AutomataFinito/lectorER.spec
 /AutomataFinito/app.spec
+/AnalizadorLexico/lex.yy.c
+/AnalizadorLexico/a.out

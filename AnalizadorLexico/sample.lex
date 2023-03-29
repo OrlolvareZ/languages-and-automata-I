@@ -144,6 +144,10 @@ int main(int length, char **args)
         return 1;
     }
 
+    FILE *apuntadorArchivoLenguaje;
+    apuntadorArchivoLenguaje = fopen(args[1], "r");
+    yyin = apuntadorArchivoLenguaje;
+
     FILE *apuntadorArchivo;
     apuntadorArchivo = fopen("./tokens.txt", "w");
 
