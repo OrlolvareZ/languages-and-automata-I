@@ -1,5 +1,6 @@
 %{
     int numLinea = 1;
+    FILE *apuntadorArchivoLenguaje;
     FILE *apuntadorArchivo;
     FILE *apuntadorArchivoErrores;
 
@@ -95,19 +96,17 @@ void escribirError(char *lexema, char *desc, int numLinea)
 
 int yywrap() { }
 
-int main(int length, char **args)
+int main(int argc, char **argv)
 {
-    if (length == 1)
+    if (argc == 1)
     {
         printf("Error: por favor especifica la ruta del archivo\n");
         return 1;
     }
 
-    FILE *apuntadorArchivoLenguaje;
-    apuntadorArchivoLenguaje = fopen(args[1], "r");
+    apuntadorArchivoLenguaje = fopen(argv[1], "r");
     yyin = apuntadorArchivoLenguaje;
 
-    FILE *apuntadorArchivo;
     apuntadorArchivo = fopen("./tokens.txt", "w");
 
     fprintf(apuntadorArchivo, "\n"
@@ -116,7 +115,6 @@ int main(int length, char **args)
         "|**************|***************|*******************|************|\n"
     );
 
-    FILE *apuntadorArchivoErrores;
     apuntadorArchivoErrores = fopen("./errors.txt", "w");
 
     fprintf(apuntadorArchivoErrores, "\n"
@@ -127,6 +125,7 @@ int main(int length, char **args)
 
     yylex();
     
+    fclose(apuntadorArchivoLenguaje);
     fclose(apuntadorArchivo);
     fclose(apuntadorArchivoErrores);
     
