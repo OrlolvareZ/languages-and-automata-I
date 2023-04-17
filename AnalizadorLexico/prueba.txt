@@ -1,0 +1,35 @@
+inicio programa ejemploNaturales2
+	Definir i, num1, num2 como Entero
+	
+	Escribir "PRIMER NÚMERO NATURAL: " 
+	Leer num1
+	Escribir "SEGUNDO NÚMERO NATURAL: " 
+	Leer num2
+	
+	// Si son naturales tienen que ser mayores que cero //
+	Si num1>=1 Y num2>=1 Entonces
+		// Si el segundo es el mayor
+		Si (num1<num2) Entonces
+			Para i<-num1 Hasta num2 Con Paso 1 Hacer
+				// Muestra el número más un espacio
+				Escribir i, "  " Sin Saltar
+			FinPara
+			Escribir " "
+		FinSi
+		
+		// Si el primero es el mayor //
+		Si (num1>num2) Entonces
+			Para i<-num2 Hasta num1 Con Paso 1 Hacer
+				// Muestra el número más un espacio
+				Escribir i, "  " Sin Saltar
+			FinPara
+			Escribir " "
+		FinSi
+		
+		Si (num1==num2) Entonces
+			Escribir num1, " y ", num2, " son iguales"
+		FinSi
+	SiNo
+		Escribir "Los dos números tienen que ser naturales"
+	FinSi
+fin
