@@ -8,10 +8,10 @@ inicio programa ejemploNaturales2
 	
 	// Si son naturales tienen que ser mayores que cero //
 	Si num1>=1 Y num2>=1 Entonces
-		// Si el segundo es el mayor
+		// Si el segundo es el mayor //
 		Si (num1<num2) Entonces
 			Para i<-num1 Hasta num2 Con Paso 1 Hacer
-				// Muestra el número más un espacio
+				// Muestra el número más un espacio //
 				Escribir i, "  " Sin Saltar
 			FinPara
 			Escribir " "
@@ -20,7 +20,7 @@ inicio programa ejemploNaturales2
 		// Si el primero es el mayor //
 		Si (num1>num2) Entonces
 			Para i<-num2 Hasta num1 Con Paso 1 Hacer
-				// Muestra el número más un espacio
+				// Muestra el número más un espacio //
 				Escribir i, "  " Sin Saltar
 			FinPara
 			Escribir " "
