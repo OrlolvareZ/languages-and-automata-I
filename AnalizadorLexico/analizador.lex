@@ -78,7 +78,7 @@
 void escribirLexema(char *lexema, int token, int posTab, int numLinea)
 {
     fprintf(apuntadorArchivo,
-        "| %-14s| %-15d| %-18d| %-11d|\n",
+        "| %-24s| %-15d| %-18d| %-11d|\n",
         lexema, token, posTab, numLinea
     );
     
@@ -109,9 +109,9 @@ int main(int argc, char **argv)
     apuntadorArchivo = fopen("./tokens.txt", "w");
 
     fprintf(apuntadorArchivo, "\n"
-        "|*************************Tabla de tokens*************************|\n"
-        "| Lexema        | Token          | Posición en tabla | # de línea |\n"
-        "|***************|****************|*******************|************|\n"
+        "|*******************************Tabla de tokens******************************|\n"
+        "| Lexema                   | Token          | Posición en tabla | # de línea |\n"
+        "|**************************|****************|*******************|************|\n"
     );
 
     apuntadorArchivoErrores = fopen("./errors.txt", "w");
