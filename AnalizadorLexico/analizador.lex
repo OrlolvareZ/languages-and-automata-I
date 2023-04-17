@@ -1,3 +1,4 @@
+/* Sección de definición */
 %{
     int numLinea = 1;
     FILE *apuntadorArchivoLenguaje;
@@ -8,6 +9,7 @@
     void escribirError(char*, char*, int);
 %}
 
+/* Sección de reglas */
 %%
 
 [ \t\r]
@@ -16,6 +18,7 @@
 [a-zA-Z]([a-zA-Z]|_|[0-9])*"%" { escribirLexema(yytext, -52, -2, numLinea); }
 [a-zA-Z]([a-zA-Z]|_|[0-9])*"&" { escribirLexema(yytext, -51, -2, numLinea); }
 [a-zA-Z]([a-zA-Z]|_|[0-9])*"@" { escribirLexema(yytext, -54, -2, numLinea); }
+[a-zA-Z]([a-zA-Z]|_|[0-9])*"?" { escribirLexema(yytext, -55, -2, numLinea); }
 
 "-"             { escribirLexema(yytext, -25, -1, numLinea); }
 "+"             { escribirLexema(yytext, -24, -1, numLinea); }
@@ -78,7 +81,7 @@
 void escribirLexema(char *lexema, int token, int posTab, int numLinea)
 {
     fprintf(apuntadorArchivo,
-        "| %-24s| %-15d| %-18d| %-11d|\n",
+        "| %-25s| %-15d| %-18d| %-11d|\n",
         lexema, token, posTab, numLinea
     );
     
@@ -99,7 +102,7 @@ int main(int argc, char **argv)
 {
     if (argc == 1)
     {
-        printf("Error: por favor especifica la ruta del archivo con el lenguaje de prueba\n");
+        printf("Error: por favor especifica la ruta del archivo con el programa de prueba\n");
         return 1;
     }
 

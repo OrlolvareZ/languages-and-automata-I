@@ -1,0 +1,19 @@
+inicio
+    miString_$ = "Este es un programa de prueba";
+    si(1==1):
+        escribir(miString_$);
+    sino:
+        escribir(miString_$ + miString_$)
+    fin
+
+    i@ === 4657....
+
+    // Aquí se imprime el cuadrado de los números del 1 al 500  //
+    // También se imprime la cadena definida anteriormente //
+
+    mientras(i <= 500):
+        escribir(i*i);
+        escribir(miString)
+    fin
+
+fin
