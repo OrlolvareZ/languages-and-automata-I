@@ -76,10 +76,7 @@ declaracion_variables:
     | identificadores_real DELIM_DOS_PUNTOS PAL_RES_REAL DELIM_PUNTO_COMA declaracion_variables
     | identificadores_entero DELIM_DOS_PUNTOS PAL_RES_ENTERO DELIM_PUNTO_COMA declaracion_variables
     | identificadores_logico DELIM_DOS_PUNTOS PAL_RES_LOGICO DELIM_PUNTO_COMA declaracion_variables
-    | identificadores_string DELIM_DOS_PUNTOS PAL_RES_CADENA DELIM_PUNTO_COMA 
-    | identificadores_real DELIM_DOS_PUNTOS PAL_RES_REAL DELIM_PUNTO_COMA
-    | identificadores_entero DELIM_DOS_PUNTOS PAL_RES_ENTERO DELIM_PUNTO_COMA
-    | identificadores_logico DELIM_DOS_PUNTOS PAL_RES_LOGICO DELIM_PUNTO_COMA
+    | %empty
     ;
 
 cuerpo:
@@ -187,23 +184,10 @@ bloque_repetir:
 
 expresion_logica:
     /* Para permitir la aparición recursiva de valores lógicos */
-    expresion_logica OP_AND expresion_logica
-    | expresion_logica OP_OR expresion_logica
-    | expresion_logica OP_IGUAL expresion_logica
-    | expresion_logica OP_DIFERENTE expresion_logica
+    expresion_logica operador_logico_booleano expresion_logica
     | OP_NOT expresion_logica
     /* Sintaxis para operadores válidos con expresiones aritméticas */
-    | expresion_aritmetica OP_IGUAL expresion_aritmetica
-    | expresion_aritmetica OP_DIFERENTE expresion_aritmetica
-    | expresion_aritmetica OP_MENOR expresion_aritmetica
-    | expresion_aritmetica OP_MAYOR expresion_aritmetica
-    | expresion_aritmetica OP_MENOR_IGUAL expresion_aritmetica
-    | expresion_aritmetica OP_MAYOR_IGUAL expresion_aritmetica
-    /* Sintaxis para operadores válidos con operaciones lógicas */
-    | operacion_logica OP_IGUAL operacion_logica
-    | operacion_logica OP_DIFERENTE operacion_logica
-    | operacion_logica OP_MENOR operacion_logica
-    | OP_NOT operacion_logica
+    | expresion_aritmetica operador_logico_aritmetico expresion_aritmetica
     /* Un valor lógico por sí mismo es válido como una expresión lógica */
     | valor_logico
     | operacion_logica
@@ -211,23 +195,22 @@ expresion_logica:
     | DELIM_PARENT_IZQ expresion_logica DELIM_PARENT_DER
     ;
 
+operador_logico_aritmetico:
+    OP_MENOR | OP_MAYOR | OP_MENOR_IGUAL | OP_MAYOR_IGUAL
+    ;
+
+operador_logico_booleano:
+    OP_AND | OP_OR | OP_IGUAL | OP_DIFERENTE
+    ;
+
 operacion_logica:
     /* Operaciones lógicas válidas con cadenas */
     IDENTIFICADOR_STRING OP_IGUAL IDENTIFICADOR_STRING
     | IDENTIFICADOR_STRING OP_DIFERENTE IDENTIFICADOR_STRING
     /* Operaciones lógicas válidas con reales y enteros */
-    | numero OP_IGUAL numero
-    | numero OP_DIFERENTE numero
-    | numero OP_MENOR numero
-    | numero OP_MAYOR numero
-    | numero OP_MENOR_IGUAL numero
-    | numero OP_MAYOR_IGUAL numero
+    | numero operador_logico_aritmetico numero
     /* Operaciones lógicas válidas con lógicos */
-    | valor_logico OP_IGUAL valor_logico
-    | valor_logico OP_DIFERENTE valor_logico
-    | valor_logico OP_AND valor_logico
-    | valor_logico OP_OR valor_logico
-    | OP_NOT valor_logico
+    | valor_logico operador_logico_booleano valor_logico
     ;
 
 valor_logico:
@@ -236,29 +219,17 @@ valor_logico:
     | IDENTIFICADOR_LOGICO
     ;
 
-expresion_aritmetica:
-    /* Para permitir la aparición recursiva de valores numéricos */
-    expresion_aritmetica OP_SUMA expresion_aritmetica
-    | expresion_aritmetica OP_RESTA expresion_aritmetica
-    | expresion_aritmetica OP_MULTIPLICACION expresion_aritmetica
-    | expresion_aritmetica OP_DIVISION expresion_aritmetica
-    /* Se definen operaciones entre operaciones aritméticas */
-    | operacion_aritmetica OP_SUMA operacion_aritmetica
-    | operacion_aritmetica OP_RESTA operacion_aritmetica
-    | operacion_aritmetica OP_MULTIPLICACION operacion_aritmetica
-    | operacion_aritmetica OP_DIVISION operacion_aritmetica
-    /* Un valor numérico por sí mismo es válido como una expresión aritmética */
-    | numero
-    | operacion_aritmetica
-    /* La expresión aritmética puede estar entre paréntesis */
-    | DELIM_PARENT_DER expresion_aritmetica DELIM_PARENT_IZQ
+operador_aritmetico:
+    OP_SUMA | OP_RESTA | OP_MULTIPLICACION | OP_DIVISION
     ;
 
-operacion_aritmetica:
-    numero OP_SUMA numero
-    | numero OP_RESTA numero
-    | numero OP_MULTIPLICACION numero
-    | numero OP_DIVISION numero
+expresion_aritmetica:
+    /* Para permitir la aparición recursiva de valores numéricos */
+    numero
+    | expresion_aritmetica operador_aritmetico expresion_aritmetica
+    /* Un valor numérico por sí mismo es válido como una expresión aritmética */
+    /* La expresión aritmética puede estar entre paréntesis */
+    | DELIM_PARENT_IZQ expresion_aritmetica DELIM_PARENT_DER
     ;
 
 numero:
