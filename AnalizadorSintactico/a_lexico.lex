@@ -50,7 +50,7 @@
 "hacer"         { return PAL_RES_HACER; }
 "repetir"       { return PAL_RES_REPETIR; }
 "hasta"         { return PAL_RES_HASTA; }
-"variable"      { return PAL_RES_VARIABLE; }
+"variables"      { return PAL_RES_VARIABLES; }
 
 "("             { return DELIM_PARENT_IZQ; }
 ")"             { return DELIM_PARENT_DER; }

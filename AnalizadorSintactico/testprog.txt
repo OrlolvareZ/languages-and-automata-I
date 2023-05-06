@@ -1,0 +1,16 @@
+programa nombre?;
+variables 
+// Sección de declaración de variables 
+// Puede contener cualquier cantidad o ninguna de variables de cualquier tipo definido
+uno&, dos& : entero ;
+tres% : real ;
+    cuatro$ : cadena ;
+    cinco@ : logico ;
+ 
+Inicio
+// Cuerpo del programa:
+// Puede contener cualquier cantidad de expresiones o estructuras de control en cualquier 
+// orden, al menos una asignacion, puede contener cualquier cantidad de expresiones de asignación
+// utilizando cualquier combinación de operadores aritméticos, lógicos o relacionales
+
+uno& = 10 + ( 39 * dos& ) ;

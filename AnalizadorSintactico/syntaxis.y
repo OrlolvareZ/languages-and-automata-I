@@ -42,7 +42,7 @@
 %token PAL_RES_HACER
 %token PAL_RES_REPETIR
 %token PAL_RES_HASTA
-%token PAL_RES_VARIABLE
+%token PAL_RES_VARIABLES
 
 %token DELIM_PARENT_DER
 %token DELIM_PARENT_IZQ
@@ -68,7 +68,7 @@ encabezado:
     ;
 
 bloque_declaracion_variables:
-    PAL_RES_VARIABLE declaracion_variables
+    PAL_RES_VARIABLES declaracion_variables
     ;
 
 declaracion_variables:
@@ -101,11 +101,11 @@ operacion_e_s:
     ;
 
 escritura:
-    PAL_RES_ESCRIBIR DELIM_PARENTESIS_IZQ valor DELIM_PARENTESIS_DER
+    PAL_RES_ESCRIBIR DELIM_PARENT_IZQ valor DELIM_PARENT_DER
     ;
 
 lectura:
-    PAL_RES_LEER DELIM_PARENTESIS_IZQ valor DELIM_PARENTESIS_DER
+    PAL_RES_LEER DELIM_PARENT_IZQ valor DELIM_PARENT_DER
     ;
 
 valor :
@@ -157,7 +157,7 @@ estruc_seleccion:
     | bloque_si bloque_sino
 
 bloque_si:
-    PAL_RES_SI DELIM_PARENTESIS_IZQ expresion_logica DELIM_PARENTESIS_DER PAL_RES_ENTONCES cuerpo
+    PAL_RES_SI DELIM_PARENT_IZQ expresion_logica DELIM_PARENT_DER PAL_RES_ENTONCES cuerpo
     ;
 
 bloque_sino:
@@ -170,11 +170,11 @@ estruc_iterativa:
     ;
 
 bloque_mientras:
-    PAL_RES_MIENTRAS DELIM_PARENTESIS_IZQ expresion_logica DELIM_PARENTESIS_DER PAL_RES_HACER cuerpo
+    PAL_RES_MIENTRAS DELIM_PARENT_IZQ expresion_logica DELIM_PARENT_DER PAL_RES_HACER cuerpo
     ;
 
 bloque_repetir:
-    PAL_RES_REPETIR cuerpo PAL_RES_HASTA DELIM_PARENTESIS_IZQ expresion_logica DELIM_PARENTESIS_DER DELIM_PUNTO_COMA
+    PAL_RES_REPETIR cuerpo PAL_RES_HASTA DELIM_PARENT_IZQ expresion_logica DELIM_PARENT_DER DELIM_PUNTO_COMA
     ;
 
 expresion_logica:
