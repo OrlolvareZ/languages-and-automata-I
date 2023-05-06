@@ -76,7 +76,10 @@ declaracion_variables:
     | identificadores_real DELIM_DOS_PUNTOS PAL_RES_REAL DELIM_PUNTO_COMA declaracion_variables
     | identificadores_entero DELIM_DOS_PUNTOS PAL_RES_ENTERO DELIM_PUNTO_COMA declaracion_variables
     | identificadores_logico DELIM_DOS_PUNTOS PAL_RES_LOGICO DELIM_PUNTO_COMA declaracion_variables
-    | %empty
+    | identificadores_string DELIM_DOS_PUNTOS PAL_RES_CADENA DELIM_PUNTO_COMA 
+    | identificadores_real DELIM_DOS_PUNTOS PAL_RES_REAL DELIM_PUNTO_COMA
+    | identificadores_entero DELIM_DOS_PUNTOS PAL_RES_ENTERO DELIM_PUNTO_COMA
+    | identificadores_logico DELIM_DOS_PUNTOS PAL_RES_LOGICO DELIM_PUNTO_COMA
     ;
 
 cuerpo:
