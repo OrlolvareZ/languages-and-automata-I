@@ -12,3 +12,5 @@
 /AnalizadorLexico/docs.texi
 /AnalizadorLexico/tokens.txt
 /AnalizadorLexico/errors.txt
+/AnalizadorSintactico/*.c
+/AnalizadorSintactico/*.h

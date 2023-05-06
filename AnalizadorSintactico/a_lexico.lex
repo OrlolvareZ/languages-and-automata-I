@@ -1,6 +1,6 @@
 /* Sección de definición */
 %{
-    #include "syntax.tab.h"
+    #include "sintaxis.tab.h"
     int num_linea = 0;
 %}
 
