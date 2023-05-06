@@ -1,6 +1,7 @@
 /* Sección de definición */
 %{
     #include "syntax.tab.h"
+    int num_linea = 0;
 %}
 
 /* Sección de reglas */
@@ -8,7 +9,7 @@
 
 [ \t\r]         { }
 "//".+"//"      { }
-\n              { }
+\n              { num_linea++; }
 
 [a-zA-Z]([a-zA-Z]|_|[0-9])*"$" { return IDENTIFICADOR_STRING; }
 [a-zA-Z]([a-zA-Z]|_|[0-9])*"%" { return IDENTIFICADOR_REAL; }
@@ -51,8 +52,8 @@
 "hasta"         { return PAL_RES_HASTA; }
 "variable"      { return PAL_RES_VARIABLE; }
 
-"("             { return DELIM_PARENT_CIERRE; }
-")"             { return DELIM_PARENT_APERTURA; }
+"("             { return DELIM_PARENT_IZQ; }
+")"             { return DELIM_PARENT_DER; }
 ";"             { return DELIM_PUNTO_COMA; }
 ","             { return DELIM_COMA; }
 ":"             { return DELIM_DOS_PUNTOS; }
@@ -65,7 +66,7 @@
 "verdadero"     { return PAL_RES_VERDADERO; }
 "falso"         { return PAL_RES_FALSO; }
 
-.               { printf("Token inválido\n"); return -1; }
+.               { printf("Token inválido (%s) en la línea (%d)\n", yytext, num_linea); return -1; }
 
 %%
 
