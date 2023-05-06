@@ -14,3 +14,4 @@
 /AnalizadorLexico/errors.txt
 /AnalizadorSintactico/*.c
 /AnalizadorSintactico/*.h
+/AnalizadorSintactico/*.out

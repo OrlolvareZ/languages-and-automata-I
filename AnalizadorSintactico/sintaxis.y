@@ -239,6 +239,8 @@ expresion_aritmetica:
     | operacion_aritmetica OP_DIVISION operacion_aritmetica
     /* Un valor numérico por sí mismo es válido como una expresión aritmética */
     | numero
+    /* La expresión aritmética puede estar entre paréntesis */
+    | DELIM_PARENT_DER expresion_aritmetica DELIM_PARENT_IZQ
     ;
 
 operacion_aritmetica:
