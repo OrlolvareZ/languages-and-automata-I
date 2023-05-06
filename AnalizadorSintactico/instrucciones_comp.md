@@ -1,8 +1,7 @@
 # Instrucciones de compilación
 
 ```
-    bison -dt syntax.y && flex lex.l && gcc lex.yy.c syntax.tab.c
-    ./a.out < testprog.txt
+    bison -dt sintaxis.y && flex lex.l && gcc lex.yy.c syntax.tab.c
 ```
 
 ## Para indicar el archivo de entrada
