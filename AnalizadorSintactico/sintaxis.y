@@ -85,8 +85,8 @@ cuerpo:
     ;
 
 expresiones:
-    expresion DELIM_PUNTO_COMA expresiones
-    | expresion DELIM_PUNTO_COMA
+    expresion expresiones
+    | expresion
     ;
 
 expresion:
@@ -101,11 +101,16 @@ operacion_e_s:
     ;
 
 escritura:
-    PAL_RES_ESCRIBIR DELIM_PARENT_IZQ valor DELIM_PARENT_DER
+    PAL_RES_ESCRIBIR DELIM_PARENT_IZQ valores DELIM_PARENT_DER
     ;
 
 lectura:
-    PAL_RES_LEER DELIM_PARENT_IZQ valor DELIM_PARENT_DER
+    PAL_RES_LEER DELIM_PARENT_IZQ valores DELIM_PARENT_DER
+    ;
+
+valores : 
+    valor DELIM_COMA valores
+    | valor
     ;
 
 valor :
@@ -199,6 +204,8 @@ expresion_logica:
     /* Un valor lógico por sí mismo es válido como una expresión lógica */
     | valor_logico
     | operacion_logica
+    /* La expresión lógica puede estar entre paréntesis */
+    | DELIM_PARENT_IZQ expresion_logica DELIM_PARENT_DER
     ;
 
 operacion_logica:
